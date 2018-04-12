@@ -17,6 +17,10 @@ var userSchema = mongoose.Schema({
     userType: {
         type: String,
         required: true
+    },
+    deviceId: {
+        type: String,
+        required: true
     }
 });
 var User = mongoose.model('user', userSchema);

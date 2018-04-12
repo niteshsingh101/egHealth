@@ -69,7 +69,7 @@ router.post('/users', function(req, res) {
 
             res.json({
                 error: 'TRUE',
-                error_msg: 'User already exist with ',
+                error_msg: 'Mobile Number Already Exists ',
             });
 
         } else {
@@ -81,6 +81,8 @@ router.post('/users', function(req, res) {
             user.mobile_number = req.body.mobile_number;
 
             user.pin = req.body.pin;
+
+            user.deviceId = req.body.deviceId;
 
             user.userType = req.body.userType;
 
@@ -186,7 +188,7 @@ router.post('/login', function(req, res) {
 
 
     User.findOne({
-        mobile_number: req.body.mobile_number,
+        deviceId: req.body.deviceId,
         pin: req.body.pin
     }, function(err, user) {
 
@@ -204,16 +206,12 @@ router.post('/login', function(req, res) {
             });
 
         }
-
         res.send({
             message: "Successfully login user ",
             userDetail: user
         });
 
     });
-
-
-
 });
 
 module.exports = router;
