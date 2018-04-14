@@ -67,9 +67,22 @@ router.post('/users', function(req, res) {
         }
         if (mobile) {
 
+            var user = {}; 
+
+            user.name = " ";
+
+            user.mobile_number = req.body.mobile_number;
+
+            user.pin = " ";
+
+            user.deviceId = " ";
+
+            user.userType = req.body.userType;
+
             res.json({
                 error: 'TRUE',
                 error_msg: 'Mobile Number Already Exists ',
+                user: user
             });
 
         } else {
@@ -86,8 +99,6 @@ router.post('/users', function(req, res) {
 
             user.userType = req.body.userType;
 
-
-
             // save the user details and check for errors
 
             user.save(function(err, user) {
@@ -95,12 +106,11 @@ router.post('/users', function(req, res) {
                 if (err)
 
                     res.send(err);
-
-
-
                 res.json({
+                    error: 'FALSE',
+                    error_msg: ' ',
                     message: 'User created!',
-                    status: 'Ok',
+                    status: '200',
                     user: user
                 });
 
@@ -140,8 +150,11 @@ router.put('/users/:user_id', function(req, res) {
 
 
             res.json({
-                message: 'User updated!',
-                status: 'Ok'
+                error: 'FALSE',
+                error_msg: ' ',
+                message: 'User updated !',
+                status: '200',
+                user: user
             });
 
         });
@@ -172,7 +185,10 @@ router.delete('/users/:user_id', function(req, res) {
 
 
         res.json({
-            message: 'Successfully deleted'
+            error: 'FALSE',
+            error_msg: ' ',
+            message: 'User deleted !',
+            status: '200'
         });
 
     });
@@ -201,12 +217,15 @@ router.post('/login', function(req, res) {
         if (!user) {
 
             return res.send({
-                message: "UnAuthenticated user",
+                error: "TRUE",
+                error_msg: "UnAuthenticated user",
                 status: "Failed to login"
             });
 
         }
         res.send({
+            error: "FALSE",
+            error_msg: " ",
             message: "Successfully login user ",
             userDetail: user
         });
