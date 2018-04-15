@@ -1,6 +1,4 @@
 var mongoose = require('mongoose');
-//var restful = require('node-restful');
-//var mongoose = restful.mongoose;
 var userSchema = mongoose.Schema({
     name: {
         type: String,
@@ -8,19 +6,38 @@ var userSchema = mongoose.Schema({
     },
     mobile_number: {
         type: Number,
-        required: true
+        required: false
+    },
+    age: {
+        type: String,
+        required: false
+    }
+    ,
+    gender: {
+        type: String,
+        required: false
+    },
+    email: {
+        type: String,
+        required: false
+    }
+    ,
+    address: {
+        type: String,
+        required: false
     },
     pin: {
         type: Number,
-        required: true
+        required: false
     },
     userType: {
         type: String,
-        required: true
-    },
+        required: false
+    }
+    ,
     deviceId: {
         type: String,
-        required: true
+        required: false
     }
 });
 var User = mongoose.model('user', userSchema);

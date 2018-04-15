@@ -4,8 +4,6 @@ var router = express.Router();
 
 var mongoose = require('mongoose');
 
-//mongoose.connect('mongodb://localhost:27017/healthapp'); // connect to our database
-
 var User = require('../model/User');
 
 /* GET users listing. */
@@ -55,9 +53,26 @@ router.get('/users/:user_id', function(req, res) {
 
 });
 
-// ----------------------------------------------------
+/* Mobile Registration  */
 
-router.post('/users', function(req, res) {
+router.post('/mobile-registration', function(req, res) {
+    var user = {}; 
+
+    user.mobile_number = req.body.mobile_number;
+    user.otp = 1245;
+    
+    res.json({
+        error: 'FALSE',
+        error_msg: ' ',
+        message: 'Otp send to registered mobile number',
+        user: user
+    });
+});
+
+
+/* Otp varifications */
+
+router.post('/mobile-verification', function(req, res) {
     /********  Check user duplicacy  ********/
     User.findOne({
         mobile_number: req.body.mobile_number
@@ -69,36 +84,38 @@ router.post('/users', function(req, res) {
 
             var user = {}; 
 
-            user.name = " ";
-
             user.mobile_number = req.body.mobile_number;
-
-            user.pin = " ";
-
-            user.deviceId = " ";
-
+            user.deviceId = req.body.deviceId;
             user.userType = req.body.userType;
 
             res.json({
                 error: 'TRUE',
                 error_msg: 'Mobile Number Already Exists ',
+                message: ' ',
                 user: user
             });
 
+        }else if(req.body.otp != 1245){
+            var user = {}; 
+
+            user.mobile_number = req.body.mobile_number;
+            user.deviceId = req.body.deviceId;
+            user.userType = req.body.userType;
+
+            res.json({
+                error: 'TRUE',
+                error_msg: 'Wrong otp',
+                message: 'Authentication Failed',
+                user: user
+            });
         } else {
 
             var user = new User(); // create a new instance of the User model
 
-            user.name = req.body.name;
-
             user.mobile_number = req.body.mobile_number;
-
-            user.pin = req.body.pin;
-
             user.deviceId = req.body.deviceId;
-
             user.userType = req.body.userType;
-
+            
             // save the user details and check for errors
 
             user.save(function(err, user) {
@@ -110,7 +127,6 @@ router.post('/users', function(req, res) {
                     error: 'FALSE',
                     error_msg: ' ',
                     message: 'User created!',
-                    status: '200',
                     user: user
                 });
 
@@ -119,35 +135,49 @@ router.post('/users', function(req, res) {
     });
 });
 
-// update a user details
+// ----------------------------------------------------
 
-router.put('/users/:user_id', function(req, res) {
+// set Pin
 
-    User.findById(req.params.user_id, function(err, user) {
+router.put('/set-pin', function(req, res) {
 
-        if (err)
-
-            res.send(err);
-
-        user.name = req.body.name;
-
-        user.mobile = req.body.mobile;
-
-        user.pin = req.body.pin;
-
-        user.userType = req.body.userType;
-
-        console.log(user);
-
-        // save the user details and check for errors
-
-        user.save(function(err, user) {
-
+    const data = {
+        pin: req.body.pin
+        
+    };
+    User.findByIdAndUpdate(req.body.user_id, data, function(err, user){
+        
             if (err)
 
                 res.send(err);
 
+            res.json({
+                error: 'FALSE',
+                error_msg: ' ',
+                message: 'Pin set Successfully !',
+                user: user
+            });
+    });
 
+});
+
+// update a user details
+
+router.put('/user-registration/', function(req, res) {
+
+    const data = {
+        name: req.body.name,
+        mobile: req.body.mobile,
+        age: req.body.age,
+        gender: req.body.gender,
+        email: req.body.email,
+        address: req.body.address
+    };
+    User.findByIdAndUpdate(req.body.user_id, data, function(err, user){
+        
+            if (err)
+
+                res.send(err);
 
             res.json({
                 error: 'FALSE',
@@ -156,12 +186,6 @@ router.put('/users/:user_id', function(req, res) {
                 status: '200',
                 user: user
             });
-
-        });
-
-
-
-
     });
 
 });
