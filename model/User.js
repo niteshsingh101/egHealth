@@ -5,11 +5,11 @@ var userSchema = mongoose.Schema({
         required: false
     },
     mobile_number: {
-        type: Number,
+        type: String,
         required: false
     },
     age: {
-        type: String,
+        type: Number,
         required: false
     }
     ,
@@ -38,7 +38,63 @@ var userSchema = mongoose.Schema({
     deviceId: {
         type: String,
         required: false
-    }
+    },
+    status: {
+        type: Number,
+        required: false
+    },
+    otp: {
+        type: Number,
+        required: false
+    },
+    experience_year: {
+            type: String,
+            required: false
+        },
+    location: {
+            type: String,
+            required: false
+        },
+    info: {
+            type: String,
+            required: false
+        },
+    fullBio: {
+            type: String,
+            required: false
+        },
+    youtube: {
+            type: String,
+            required: false
+        },
+    facebook: {
+            type: String,
+            required: false
+        },
+    twitter: {
+            type: String,
+            required: false
+        },
+    website: {
+            type: String,
+            required: false
+        },
+    profilePic: {
+            type: String,
+            required: false
+        },
+    certificate: {
+            type: String,
+            required: false
+        },
+    specialties: {
+        type: Array,
+        required: false
+    },
+    facilities: {
+        type: Array,
+        required: false
+    }       
 });
 var User = mongoose.model('user', userSchema);
 mongoose.Promise = global.Promise;
